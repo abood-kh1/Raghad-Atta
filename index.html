@@ -25,10 +25,10 @@
 body{font-family:'Tajawal',sans-serif;color:var(--text-main);overflow-x:hidden!important;background-color:#f6f4ef}
 /* ===== الخلفية المتحركة (Ken Burns) — طبقتين تتحركان باتجاهين مختلفين ===== */
 .bg-photo{position:fixed;inset:-8%;z-index:-2;background-size:cover;background-position:center 55%;background-repeat:no-repeat;
-  animation:bgPan 34s ease-in-out infinite alternate;will-change:transform}
-@keyframes bgPan{0%{transform:scale(1.02) translate3d(0,0,0)}50%{transform:scale(1.16) translate3d(-2.2%,-1.6%,0)}100%{transform:scale(1.02) translate3d(0,0,0)}}
+  animation:bgDrift 30s ease-in-out infinite;will-change:transform}
+@keyframes bgDrift{0%{transform:scale(1.05) translate3d(0,0,0) rotate(0deg)}25%{transform:scale(1.16) translate3d(-2.4%,-1.8%,0) rotate(.4deg)}50%{transform:scale(1.1) translate3d(1.8%,-1%,0) rotate(-.35deg)}75%{transform:scale(1.18) translate3d(-1.2%,1.6%,0) rotate(.3deg)}100%{transform:scale(1.05) translate3d(0,0,0) rotate(0deg)}}
 .bg-photo::after{content:"";position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(250,247,241,.90) 0%,rgba(243,236,226,.78) 45%,rgba(236,228,216,.90) 100%)}
+  background:linear-gradient(180deg,rgba(250,247,241,.82) 0%,rgba(243,236,226,.66) 45%,rgba(236,228,216,.82) 100%)}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background:radial-gradient(ellipse at 50% 12%,rgba(255,255,255,.55) 0%,transparent 55%),
              radial-gradient(ellipse at 50% 92%,rgba(201,162,79,.18) 0%,transparent 60%)}
@@ -44,6 +44,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 @keyframes petalFall{0%{transform:translateY(-10vh) rotate(0);opacity:0}10%{opacity:.6}100%{transform:translateY(112vh) rotate(320deg);opacity:0}}
 .sparkle{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--gold-accent);box-shadow:0 0 10px var(--gold-accent);animation:sparkleTwinkle 3.2s ease-in-out infinite}
 @keyframes sparkleTwinkle{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:.95;transform:scale(1.25)}}
+.fx-bokeh{position:absolute;bottom:-12%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,250,230,.9) 0%,rgba(212,175,55,.45) 45%,transparent 70%);
+  filter:blur(2px);opacity:0;animation:bokehRise linear infinite}
+@keyframes bokehRise{0%{transform:translateY(0) translateX(0) scale(.7);opacity:0}12%{opacity:.75}60%{opacity:.5}100%{transform:translateY(-125vh) translateX(4vw) scale(1.15);opacity:0}}
 /* ===== زر واتساب ===== */
 .wa-card{width:100%;background:linear-gradient(140deg,#1faa54,#128c4a);border-radius:24px;padding:26px 22px;text-align:center;color:#fff;
   box-shadow:0 16px 40px rgba(18,140,74,.32);position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.25)}
@@ -71,12 +75,24 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   box-shadow:5px 0 25px rgba(218,165,32,.08),inset -5px 0 15px rgba(255,235,150,.05)}
 .curtain-right{right:0;transform-origin:right center;border-left:1px solid rgba(255,235,150,.35);
   box-shadow:-5px 0 25px rgba(218,165,32,.08),inset 5px 0 15px rgba(255,235,150,.05)}
-.entry-button-wrapper{position:relative;z-index:10000;cursor:pointer;transition:all .5s ease}
-.entry-circle{width:180px;height:180px;background:linear-gradient(150deg,rgba(255,255,255,.85),rgba(255,255,255,.5));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
-  box-shadow:0 10px 30px rgba(0,0,0,.1),inset 0 1px 0 rgba(255,255,255,.9),inset 0 0 15px rgba(140,136,119,.05);border:1px solid rgba(255,255,255,.7);position:relative}
+.entry-button-wrapper{position:relative;z-index:10000;cursor:pointer;transition:all .5s ease;animation:entryFloat 3.5s ease-in-out infinite}
+@keyframes entryFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.entry-circle{width:184px;height:184px;background:linear-gradient(150deg,rgba(255,255,255,.92),rgba(255,255,255,.55));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  box-shadow:0 15px 40px rgba(140,83,105,.22),inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 18px rgba(197,168,90,.12);border:1px solid rgba(255,255,255,.8);position:relative;
+  animation:entryGlow 2.8s ease-in-out infinite}
+@keyframes entryGlow{0%,100%{box-shadow:0 15px 40px rgba(140,83,105,.2),inset 0 1px 0 rgba(255,255,255,.95),0 0 0 rgba(212,175,55,0)}50%{box-shadow:0 15px 45px rgba(140,83,105,.32),inset 0 1px 0 rgba(255,255,255,.95),0 0 32px rgba(212,175,55,.45)}}
+.entry-circle::before{content:"";position:absolute;inset:-9px;border-radius:50%;z-index:-1;
+  background:conic-gradient(from 0deg,#d4af37,#f6e8bd,#8C5369,#3D4A3E,#d4af37);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
+  animation:entryHalo 8s linear infinite;opacity:.9}
+@keyframes entryHalo{to{transform:rotate(360deg)}}
 .circle-foliage{position:absolute;width:100%;height:100%;border-radius:50%;border:2px dashed rgba(197,168,90,.45);width:calc(100% - 14px);height:calc(100% - 14px);opacity:.7}
-.entry-names{font-family:'Aref Ruqaa',serif;font-size:1.5rem;color:#6b695e;line-height:1.5;margin-bottom:5px}
-.entry-open{font-size:.8rem;letter-spacing:3px;color:#a9a494;border-top:1px solid #e6e4dc;padding-top:5px}
+.entry-names{font-family:'Aref Ruqaa',serif;font-size:1.5rem;color:#6b695e;line-height:1.5;margin-bottom:8px}
+.l-r{display:inline-block;background:linear-gradient(135deg,#8C5369,#d18aa5);-webkit-background-clip:text;background-clip:text;color:transparent}
+.l-amp{display:inline-block;background:linear-gradient(135deg,#b98a2a,#e9c86a);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:.82em;padding:0 8px}
+.l-a{display:inline-block;background:linear-gradient(135deg,#3D4A3E,#8ba389);-webkit-background-clip:text;background-clip:text;color:transparent}
+.entry-open{font-size:.72rem;letter-spacing:4px;font-weight:700;color:#fff;background:linear-gradient(135deg,#e3c67b,#cba44c);padding:7px 20px 7px 24px;border-radius:99px;box-shadow:0 6px 18px rgba(203,164,76,.5),inset 0 1px 3px rgba(255,255,255,.5);border:0}
 .curtain-opened .curtain-left{transform:translateX(-100%)}
 .curtain-opened .curtain-right{transform:translateX(100%) rotateY(180deg)}
 .curtain-opened .entry-button-wrapper{opacity:0;visibility:hidden;transform:scale(1.5)}
@@ -375,7 +391,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     <div class="entry-button-wrapper" id="start-invitation">
       <div class="entry-circle">
         <div class="circle-foliage"></div>
-        <p class="entry-names" style="direction:ltr;font-family:'Dancing Script',cursive;font-size:2.5rem;white-space:nowrap;letter-spacing:2px">R &amp; A</p>
+        <p class="entry-names" style="direction:ltr;font-family:'Dancing Script',cursive;font-size:2.5rem;white-space:nowrap;letter-spacing:2px"><span class="l-r">R</span><span class="l-amp">&amp;</span><span class="l-a">A</span></p>
         <span class="entry-open">OPEN</span>
       </div>
     </div>
@@ -505,7 +521,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     </section>
 
     <section class="moments-section">
-      <h3 class="section-title">لحظات من الحفل</h3>
+      <h3 class="section-title">اللقاء الأول</h3>
       <div class="video-placeholder">
         <img class="moment-img" src="photo/couple.jfif" alt="عطا ورغد">
       </div>
@@ -738,6 +754,17 @@ document.addEventListener('DOMContentLoaded', function(){
       s.style.animationDelay = (-Math.random() * 4) + 's';
       fx.appendChild(s);
     }
+    // فقاعات ضوئية (بوكيه) صاعدة ببطء — إحساس حي للخلفية
+    for (let i = 0; i < 10; i++) {
+      const b = document.createElement('div');
+      b.className = 'fx-bokeh';
+      const sz = 8 + Math.random() * 22;
+      b.style.width = b.style.height = sz + 'px';
+      b.style.left = (Math.random() * 100) + '%';
+      b.style.animationDuration = (11 + Math.random() * 14) + 's';
+      b.style.animationDelay = (-Math.random() * 22) + 's';
+      fx.appendChild(b);
+    }
     // حركة خفيفة للطبقة مع المؤشر أو الجوال
     let tx = 0, ty = 0, cx = 0, cy = 0;
     window.addEventListener('mousemove', e => {
@@ -754,7 +781,11 @@ document.addEventListener('DOMContentLoaded', function(){
       cx += (tx - cx) * .06;
       cy += (ty - cy) * .06;
       // طبقة الصورة تتحرك عكس الحركة البطيئة، فتعطي عمقًا (parallax مضاعف)
-      bgImg.style.translate = (-cx * .55 + 'px,' + -cy * .55 + 'px');
+      bgImg.style.translate = (-cx * .55) + 'px ' + (-cy * .55) + 'px';
+      // تكبير خفيف للخلفية كلما نزل الزائر أكثر — إحساس الغوص بالصورة
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const prog = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+      bgImg.style.scale = (1 + prog * .07).toFixed(3);
       fx.style.transform = 'translate(' + cx + 'px,' + cy + 'px)';
       requestAnimationFrame(parallax);
     })();
