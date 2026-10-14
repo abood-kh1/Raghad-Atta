@@ -75,23 +75,29 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   box-shadow:5px 0 25px rgba(218,165,32,.08),inset -5px 0 15px rgba(255,235,150,.05)}
 .curtain-right{right:0;transform-origin:right center;border-left:1px solid rgba(255,235,150,.35);
   box-shadow:-5px 0 25px rgba(218,165,32,.08),inset 5px 0 15px rgba(255,235,150,.05)}
-.entry-button-wrapper{position:relative;z-index:10000;cursor:pointer;transition:all .5s ease;animation:entryFloat 3.5s ease-in-out infinite}
-@keyframes entryFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.entry-circle{width:184px;height:184px;background:linear-gradient(150deg,rgba(255,255,255,.92),rgba(255,255,255,.55));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
-  box-shadow:0 15px 40px rgba(140,83,105,.22),inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 18px rgba(197,168,90,.12);border:1px solid rgba(255,255,255,.8);position:relative;
-  animation:entryGlow 2.8s ease-in-out infinite}
-@keyframes entryGlow{0%,100%{box-shadow:0 15px 40px rgba(140,83,105,.2),inset 0 1px 0 rgba(255,255,255,.95),0 0 0 rgba(212,175,55,0)}50%{box-shadow:0 15px 45px rgba(140,83,105,.32),inset 0 1px 0 rgba(255,255,255,.95),0 0 32px rgba(212,175,55,.45)}}
-.entry-circle::before{content:"";position:absolute;inset:-9px;border-radius:50%;z-index:-1;
-  background:conic-gradient(from 0deg,#d4af37,#f6e8bd,#8C5369,#3D4A3E,#d4af37);
-  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
-  mask:radial-gradient(farthest-side,transparent calc(100% - 4px),#000 calc(100% - 3px));
-  animation:entryHalo 8s linear infinite;opacity:.9}
-@keyframes entryHalo{to{transform:rotate(360deg)}}
-.circle-foliage{position:absolute;width:100%;height:100%;border-radius:50%;border:2px dashed rgba(197,168,90,.45);width:calc(100% - 14px);height:calc(100% - 14px);opacity:.7}
+.entry-button-wrapper{position:relative;z-index:10000;cursor:pointer;transition:opacity .5s ease,visibility .5s ease,transform .5s ease}
+/* ختم شمعي ملكي: دائرة عميقة + حلقة ذهبية مزدوجة ثابتة */
+.entry-circle{width:184px;height:184px;background:linear-gradient(150deg,rgba(255,255,255,.94),rgba(253,248,238,.68));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
+  box-shadow:0 18px 45px rgba(61,74,62,.2),inset 0 1px 0 rgba(255,255,255,.95),inset 0 0 20px rgba(197,168,90,.14);
+  border:1px solid rgba(197,168,90,.6);position:relative}
+.entry-circle::before{content:"";position:absolute;inset:-8px;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(212,175,55,.55)}
+.entry-circle::after{content:"";position:absolute;inset:9px;border-radius:50%;pointer-events:none;
+  border:1px solid rgba(212,175,55,.35)}
+.circle-foliage{display:none}
 .entry-names{font-family:'Aref Ruqaa',serif;font-size:1.5rem;color:#6b695e;line-height:1.5;margin-bottom:8px}
-.l-r{display:inline-block;background:linear-gradient(135deg,#8C5369,#d18aa5);-webkit-background-clip:text;background-clip:text;color:transparent}
-.l-amp{display:inline-block;background:linear-gradient(135deg,#b98a2a,#e9c86a);-webkit-background-clip:text;background-clip:text;color:transparent;font-size:.82em;padding:0 8px}
-.l-a{display:inline-block;background:linear-gradient(135deg,#3D4A3E,#8ba389);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* المونوغرام: أحرف لاتينية متشابكة بذهبي رقائقي + سطر عربي */
+.seal-mono{display:flex;flex-direction:column;align-items:center;margin-bottom:12px}
+.seal-latin{font-family:'Dancing Script',cursive;font-weight:700;font-size:2.7rem;line-height:1;direction:ltr;white-space:nowrap;
+  background:linear-gradient(165deg,#b57e92 0%,#8C5369 55%,#6b3a4e 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.75))}
+.seal-rule{display:flex;align-items:center;gap:7px;margin:7px 0 6px;width:104px}
+.seal-rule i{flex:1;height:1px;background:linear-gradient(to left,transparent,rgba(212,175,55,.9))}
+.seal-rule i:last-child{background:linear-gradient(to right,transparent,rgba(212,175,55,.9))}
+.seal-rule b{font-size:.6rem;color:#d4af37;font-weight:400}
+.seal-ar{font-family:'Aref Ruqaa',serif;font-size:1.25rem;line-height:1.6;color:var(--text-main);text-shadow:0 1px 0 rgba(255,255,255,.7)}
 .entry-open{font-size:.72rem;letter-spacing:4px;font-weight:700;color:#fff;background:linear-gradient(135deg,#e3c67b,#cba44c);padding:7px 20px 7px 24px;border-radius:99px;box-shadow:0 6px 18px rgba(203,164,76,.5),inset 0 1px 3px rgba(255,255,255,.5);border:0}
 .curtain-opened .curtain-left{transform:translateX(-100%)}
 .curtain-opened .curtain-right{transform:translateX(100%) rotateY(180deg)}
@@ -391,7 +397,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     <div class="entry-button-wrapper" id="start-invitation">
       <div class="entry-circle">
         <div class="circle-foliage"></div>
-        <p class="entry-names" style="direction:ltr;font-family:'Dancing Script',cursive;font-size:2.5rem;white-space:nowrap;letter-spacing:2px"><span class="l-r">R</span><span class="l-amp">&amp;</span><span class="l-a">A</span></p>
+        <div class="seal-mono" role="img" aria-label="R and A — ر ع">
+          <span class="seal-latin">R &amp; A</span>
+          <span class="seal-rule" aria-hidden="true"><i></i><b>✦</b><i></i></span>
+          <span class="seal-ar">ر · ع</span>
+        </div>
         <span class="entry-open">OPEN</span>
       </div>
     </div>
