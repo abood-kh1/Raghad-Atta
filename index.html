@@ -23,10 +23,9 @@
 <title>فرح عطا ورغد</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Aref+Ruqaa:wght@400;700&family=Dancing+Script:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Aref+Ruqaa:wght@400;700&family=Dancing+Script:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<script async src="https://unpkg.com/@phosphor-icons/web"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
 :root{
   --text-main:#3D4A3E;
   --text-dark:#8C5369;
@@ -663,7 +662,7 @@ body{background-color:#f8f4ec}
     <section class="story-section">
       <div class="story-header" id="story-toggle">
         <div class="story-image-container">
-          <img class="story-photo" src="photo/couple.jfif" alt="عطا ورغد">
+          <img class="story-photo" src="photo/couple.jfif" alt="عطا ورغد" loading="lazy" decoding="async">
           <div class="story-overlay-title">
             <h2>عطا و رغد</h2>
             <i class="ph ph-caret-down" id="story-arrow"></i>
@@ -742,8 +741,8 @@ body{background-color:#f8f4ec}
   </div>
 
   <div class="toast" id="toast"></div>
-  <audio id="bg-music" loop preload="auto">
-    <source src="music/music.mp3" type="audio/mpeg">
+  <audio id="bg-music" loop preload="none">
+    <source src="music/music-2min.mp3" type="audio/mpeg">
   </audio>
 </div>
 
@@ -890,15 +889,19 @@ document.addEventListener('DOMContentLoaded', function(){
   // الستارة + التمرير التلقائي (نفس حركة الموقع المرجعي)
   const curtain = $('curtain-container'), startBtn = $('start-invitation');
   document.body.style.overflow = 'hidden';
-  let scrollSpeed = .55, autoScrollAnimation, resumeScrollTimer, autoScrollStarted = false, reachedPageEnd = false;
-  function scrollStep(){
-    window.scrollTo(0, window.scrollY + scrollSpeed);
+  const scrollSpeed = 33;
+  let autoScrollAnimation, resumeScrollTimer, autoScrollStarted = false, reachedPageEnd = false, lastScrollFrame = 0;
+  function scrollStep(timestamp){
+    const elapsed = lastScrollFrame ? Math.min(timestamp - lastScrollFrame, 50) : 1000 / 60;
+    lastScrollFrame = timestamp;
+    window.scrollTo(0, window.scrollY + scrollSpeed * elapsed / 1000);
     if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) { reachedPageEnd = true; stopScroll(); }
     else { autoScrollAnimation = requestAnimationFrame(scrollStep); }
   }
   function stopScroll(){
     if (autoScrollAnimation) cancelAnimationFrame(autoScrollAnimation);
     autoScrollAnimation = null;
+    lastScrollFrame = 0;
   }
   function startAutoScroll(){
     if (reachedPageEnd || autoScrollAnimation) return;
