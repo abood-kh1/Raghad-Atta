@@ -989,11 +989,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
   textIn.addEventListener('input', () => counter.textContent = textIn.value.length + ' / 300');
 
+  async function fetchCommentRows(){
+    const res = await fetch(COMMENTS_API + '?action=list&t=' + Date.now(), {cache:'no-store'});
+    const data = await res.json();
+    return Array.isArray(data) ? data : (data.comments || []);
+  }
+
   async function loadComments(){
     try {
-      const res = await fetch(COMMENTS_API + '?action=list&t=' + Date.now());
-      const data = await res.json();
-      const rows = Array.isArray(data) ? data : (data.comments || []);
+      const rows = await fetchCommentRows();
       if (empty) empty.remove();
       rows.forEach(c => list.appendChild(renderComment(c)));
     } catch(e){
@@ -1020,6 +1024,18 @@ document.addEventListener('DOMContentLoaded', function(){
       temp.classList.remove('comment-pending');
       temp.querySelector('.comment-time').textContent = formatCommentTime(sentAt);
       toast('وصلتنا رسالتك 🤍');
+      // استبدل وقت الجهاز بوقت الحفظ الفعلي الذي أعاده Google Sheets دون تحديث الصفحة.
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          if (attempt) await new Promise(resolve => setTimeout(resolve, 400));
+          const rows = await fetchCommentRows();
+          const saved = rows.find(c => c.name === name && c.message === message && c.time != null && Number.isFinite(Number(c.time)));
+          if (saved) {
+            temp.querySelector('.comment-time').textContent = formatCommentTime(saved.time);
+            break;
+          }
+        } catch(e) { if (attempt === 2) break; }
+      }
     } catch(e){
       temp.remove();
       textIn.value = message;

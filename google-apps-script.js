@@ -95,7 +95,33 @@ function parseDate(value) {
   if (!value) return null;
   if (value instanceof Date) return value.getTime();
   if (typeof value === 'number' && isFinite(value)) return value;
-  var t = Date.parse(String(value).replace(/\//g, '-'));
+  var text = String(value)
+    .replace(/[\u0660-\u0669]/g, function(d) { return String(d.charCodeAt(0) - 0x0660); })
+    .replace(/[\u06F0-\u06F9]/g, function(d) { return String(d.charCodeAt(0) - 0x06F0); })
+    .replace(/[\u061C\u200E\u200F\u202A-\u202E]/g, '')
+    .replace(/صباحًا|صباحا|ص/g, 'AM')
+    .replace(/مساءً|مساءا|م/g, 'PM')
+    .replace(/،/g, ',')
+    .trim();
+
+  // Parse the original ar-EG text stored by earlier script versions.
+  var match = text.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})[,]?\s+(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)?$/i);
+  if (match) {
+    var day = Number(match[1]), month = Number(match[2]), year = Number(match[3]);
+    var hour = Number(match[4]), minute = Number(match[5]), second = Number(match[6] || 0);
+    var meridiem = String(match[7] || '').toUpperCase();
+    if (meridiem === 'PM' && hour < 12) hour += 12;
+    if (meridiem === 'AM' && hour === 12) hour = 0;
+    var dateText = year + '-' + ('0' + month).slice(-2) + '-' + ('0' + day).slice(-2) + ' ' +
+      ('0' + hour).slice(-2) + ':' + ('0' + minute).slice(-2) + ':' + ('0' + second).slice(-2);
+    try {
+      return Utilities.parseDate(dateText, Session.getScriptTimeZone(), 'yyyy-MM-dd HH:mm:ss').getTime();
+    } catch (err) {
+      return null;
+    }
+  }
+
+  var t = Date.parse(text);
   return isNaN(t) ? null : t;
 }
 
