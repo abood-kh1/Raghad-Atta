@@ -250,26 +250,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .countdown-boxes .num{position:relative;display:block;font-size:1.9rem;font-weight:700;color:var(--text-dark);line-height:1.1;margin-bottom:6px;font-variant-numeric:tabular-nums;direction:ltr;text-shadow:0 1px 0 rgba(255,255,255,.7)}
 .countdown-boxes .label{position:relative;display:block;font-size:.72rem;color:#7a7568;letter-spacing:1px}
 
-/* ===== البرنامج timeline ===== */
-.timeline-section{width:100%;background:linear-gradient(150deg,rgba(255,255,255,.55),rgba(255,255,255,.25));backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border:1px solid rgba(255,255,255,.6);border-radius:25px;padding:40px 25px;box-shadow:0 18px 45px rgba(61,74,62,.14),inset 0 1px 0 rgba(255,255,255,.8);margin-top:20px}
-.timeline-section .section-title{color:var(--primary-color,#74517B);margin-bottom:45px;font-size:1.2rem;font-weight:700;letter-spacing:1px}
-.timeline{position:relative;padding:0;margin:0 auto}
-.timeline::before{content:'';position:absolute;left:50%;top:5px;bottom:-15px;width:2px;background:linear-gradient(to bottom,transparent,var(--gold-color,#D4AF37),transparent);opacity:.4;transform:translateX(-50%)}
-.scroll-tracker-dot{position:absolute;left:50%;top:0;transform:translateX(-50%);width:16px;height:16px;background-color:var(--gold-color,#D4AF37);border-radius:50%;z-index:3;
-  box-shadow:0 0 15px 5px rgba(212,175,55,.5);transition:top .4s cubic-bezier(.25,1,.5,1);display:none}
-.timeline-item{display:flex;align-items:center;margin-bottom:45px;position:relative;width:100%;transition:all .4s cubic-bezier(.175,.885,.32,1.275)}
-.timeline-item:last-child{margin-bottom:10px}
-.timeline-item .dot{position:absolute;left:50%;transform:translateX(-50%);width:14px;height:14px;background-color:var(--primary-color,#74517B);border-radius:50%;z-index:2;border:3px solid #fff;
-  box-shadow:0 0 15px rgba(116,81,123,.3);transition:all .3s ease}
-.timeline-item.active .dot{width:18px;height:18px;background-color:var(--gold-color,#D4AF37);border:4px solid #fff;box-shadow:0 0 20px 5px rgba(212,175,55,.4);animation:pulse-gold 2s infinite}
-@keyframes pulse-gold{0%{box-shadow:0 0 0 0 rgba(212,175,55,.7)}70%{box-shadow:0 0 0 10px rgba(212,175,55,0)}100%{box-shadow:0 0 0 0 rgba(212,175,55,0)}}
-.timeline-item .content{display:flex;width:100%;justify-content:space-between;align-items:center;padding:0}
-.timeline-item .content .event-name{flex:1;text-align:left;padding-left:30px;font-size:1.05rem;font-weight:600;color:var(--primary-color,#74517B);transition:color .3s ease}
-.timeline-item .content .time-container{flex:1;text-align:right;padding-right:30px;display:flex;flex-direction:column}
-.timeline-item .content .event-time{font-size:.95rem;font-weight:400;color:#666}
-.timeline-item:hover{transform:scale(1.02)}
-.timeline-item:hover .event-name{color:var(--gold-color,#D4AF37)}
-
 /* ===== تفاصيل الحفل ===== */
 .details-section{width:100%;padding:10px}
 .details-list{display:flex;flex-direction:column;gap:15px}
@@ -399,6 +379,100 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 .toast.show{opacity:1;transform:translate(-50%,0)}
 @media(max-width:520px){.hero-names{font-size:2.9rem}.countdown-boxes{gap:8px}.countdown-boxes .box{max-width:78px;padding:15px 5px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+/* تنسيق ورقي هادئ مستوحى من دعوة أنس */
+:root{--text-main:#665f56;--text-dark:#8c5369;--card-bg:rgba(255,253,248,.88);--gold-accent:#b69a60;--gold-color:#b69a60;--primary-color:#8c5369;--border-color:rgba(182,154,96,.25)}
+body{background-color:#f8f4ec}
+.bg-photo::after{background:linear-gradient(180deg,rgba(250,247,241,.76),rgba(243,236,226,.66) 48%,rgba(236,228,216,.78))}
+.fx-orb{opacity:.2}.fx-orb.o1{background:#d9b7bf}.fx-orb.o2{background:#c4cbb8}.fx-orb.o3{background:#dfd0ad}
+.fx-petal{opacity:.25}.sparkle{opacity:.45}.fx-bokeh{opacity:0}
+.curtain-overlay{background:rgba(248,244,236,.83);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:28px 20px;overflow-y:auto;overscroll-behavior:contain}
+.curtain-overlay::before{content:"";position:absolute;inset:15px;border:1px solid #b69a6055;pointer-events:none;background:radial-gradient(ellipse at 100% 15%,#e8cbd833,transparent 55%),radial-gradient(ellipse at 0 85%,#e5d4b633,transparent 50%)}
+.curtain-overlay::after{content:"";position:absolute;inset:22px;border:1px solid #b69a6025;pointer-events:none}
+.curtain-left,.curtain-right{display:none}
+.entry-button-wrapper{width:min(100%,440px);margin:auto;z-index:2;cursor:default}
+.intro-cover{display:flex;flex-direction:column;align-items:center;text-align:center}
+.intro-heading{animation:cover-arrive .9s ease both}
+.intro-eyebrow{font-size:.76rem;color:#8b765c;margin-bottom:5px}
+.intro-title{font-family:'Aref Ruqaa',Amiri,serif;font-size:clamp(3.6rem,14vw,4.7rem);font-weight:400;line-height:1.3;color:var(--text-dark);white-space:nowrap}
+.intro-title{display:flex;align-items:center;justify-content:center;gap:clamp(8px,3vw,18px);font-size:clamp(3.5rem,13vw,4.55rem);letter-spacing:0;text-shadow:0 2px 0 #fff8,0 7px 20px #8c536916}
+.intro-title .name-part{display:inline-block;position:relative;padding:0 .04em;line-height:1.5}
+.intro-title .name-part::after{content:"";position:absolute;bottom:3px;right:12%;left:12%;height:1px;background:linear-gradient(90deg,transparent,#b69a606e,transparent)}
+.intro-title span{font-family:Amiri,serif;font-size:.52em;color:var(--gold-accent);margin:0 .08em}
+.intro-signature{font-family:'Dancing Script',cursive;font-size:1.45rem;color:#a58b62;margin-bottom:15px;direction:ltr}
+.intro-scene{position:relative;width:min(275px,72vw);margin:4px 0 0;animation:cover-arrive 1.1s .1s both}
+.intro-scene::before,.intro-scene::after{content:"";position:absolute;z-index:-1;border:1px solid #b69a6066;border-radius:170px 170px 7px 7px}
+.intro-scene::before{inset:-9px 9px 9px -9px}.intro-scene::after{inset:-16px -7px 16px 7px;border-color:#b69a602e}
+.intro-photo{height:clamp(220px,34svh,300px);position:relative;overflow:hidden;border-radius:160px 160px 6px 6px;background:#d6c3a6;box-shadow:0 18px 35px -17px #634a3b66}
+.intro-photo img{width:100%;height:100%;display:block;object-fit:cover;object-position:50% 55%;filter:saturate(.72) brightness(1.04);animation:cover-photo-drift 12s ease-in-out infinite alternate}
+.intro-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#f4ddbf12,transparent 48%,#352a2b99)}
+.intro-photo-caption{position:absolute;z-index:1;bottom:13px;right:8px;left:8px;color:#fff7e6;font-family:Amiri,serif;font-size:1.25rem;text-shadow:0 2px 9px #30232466}
+.intro-date{position:absolute;z-index:2;left:-12px;top:44%;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:75px;padding:9px 7px;background:#faf5ec;border:1px solid #c5ae7b80;box-shadow:0 5px 18px #62473518;transform:rotate(-2deg);color:var(--text-dark)}
+.intro-date span{font-size:.72rem;color:#79674f}.intro-date time{font:1.2rem Georgia,serif;direction:ltr;white-space:nowrap}.intro-date i{font-style:normal;color:var(--gold-accent)}
+.intro-glint{position:absolute;right:-22px;top:20%;color:var(--gold-accent);font:26px Georgia,serif;animation:cover-glint 4s ease-in-out infinite}.intro-glint-two{right:10px;top:-22px;font-size:17px;animation-delay:-2s}
+.intro-invitation-action{margin-top:-36px;z-index:3;animation:cover-arrive .9s .35s both}
+.intro-open-button{display:inline-flex;flex-direction:column;align-items:center;gap:12px;min-width:130px;min-height:110px;padding:0 10px 4px;border:0;background:transparent;color:var(--text-dark);font:inherit;cursor:pointer;touch-action:manipulation}
+.intro-seal{display:grid;place-items:center;width:74px;height:74px;border:1px solid #caa4a3;border-radius:50%;background:linear-gradient(135deg,#b88896,#8c5369 65%,#a47383);box-shadow:0 7px 17px #78575d26,inset 0 1px 2px #fff4;color:#f3dfbc;font:1.7rem 'Aref Ruqaa',serif;position:relative}
+.intro-seal::before{content:"";position:absolute;inset:5px;border:1px solid #e5c5a580;border-radius:inherit}.intro-seal::after{content:"";position:absolute;inset:-7px;border:1px solid #b69a6055;border-radius:inherit;animation:invitation-beckon 4.8s ease-out infinite}
+.intro-seal-caption{font-size:.82rem;color:#765e58}.curtain-opened .intro-heading,.curtain-opened .intro-invitation-action{opacity:0;transform:translateY(20px);transition:opacity .45s,transform .55s}.curtain-opened .intro-scene{opacity:0;transform:scale(1.12);transition:opacity .7s,transform .9s}
+.hero{min-height:650px;height:86svh;max-height:900px;padding:65px 18px 65px;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0 28px 0;border:1px solid #b69a6060;border-radius:170px 170px 12px 12px;z-index:-1;background:linear-gradient(180deg,#fffdf56e,#fffdf12b);box-shadow:inset 0 0 0 7px #fffdf522}
+.hero-names{display:flex;flex-direction:column;align-items:center;direction:ltr;font-family:'Dancing Script',cursive!important;font-size:clamp(3.3rem,15vw,4.5rem);font-weight:400;line-height:1;color:var(--text-dark);text-shadow:0 2px 0 #fff8}
+.hero-subtitle{font-family:Tajawal,sans-serif;font-size:.76rem;letter-spacing:3px;margin:0 0 29px;color:#7c756a;text-transform:uppercase;font-weight:500}
+.name-wrapper{display:flex;flex-direction:column;align-items:center;width:fit-content;margin:0 auto}
+.title-prefix{font-size:.32em;color:#322b3b;font-family:'Dancing Script',cursive!important;font-style:italic;font-weight:400;margin:0 0 -5px 2px;align-self:flex-start}.name-text{font-family:'Dancing Script',cursive!important;font-weight:400;letter-spacing:0}
+.ampersand-wrapper{display:block;margin:7px 0;color:var(--gold-accent)}.ampersand{font:1.8rem 'Dancing Script',cursive;color:var(--gold-accent)}
+.hero-date{max-width:30ch;margin:22px auto 0;font-size:1.04rem;line-height:1.9;color:#75665c;text-align:center}.hero-date b{color:var(--text-dark)}
+.monogram{font-family:'Aref Ruqaa',serif;display:grid;place-items:center;width:64px;height:64px;border:1px solid #b69a6070;border-radius:50%;color:var(--text-dark);font-size:1.5rem;margin:0 auto 10px;background:#fffcf680}
+.botanical{position:absolute;width:100px;height:170px;pointer-events:none;color:#7a886b;opacity:.6;z-index:-1}.botanical-right{right:8px;top:45px;transform:rotate(12deg)}.botanical-left{left:8px;bottom:30px;transform:rotate(190deg)}
+.botanical path{fill:none;stroke:currentColor;stroke-width:1.2;stroke-linecap:round}.botanical ellipse{fill:currentColor;opacity:.5}
+@media(max-width:520px){.hero{min-height:650px}.hero-names{font-size:clamp(3.2rem,15vw,4rem)}.botanical{width:78px}}
+.card,.welcome-card{background:rgba(255,253,248,.76);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid #b69a6035;border-radius:20px;box-shadow:0 14px 36px #654c3910,inset 0 1px 0 #ffffffaa}
+.welcome-card:not(.invitation-card){padding:38px 24px;background:rgba(250,246,237,.94);border:1px solid #fffdf0c9;border-radius:28px;box-shadow:0 14px 36px #654c3910,inset 0 1px 0 #ffffffcc}
+.welcome-card:not(.invitation-card) .bismillah{font-size:clamp(1.8rem,7vw,2.2rem);margin-bottom:4px;color:var(--text-dark)}
+.welcome-card:not(.invitation-card) .ayah-divider{margin:24px 0 20px;color:var(--gold-accent)}
+.welcome-card:not(.invitation-card) .ayah-divider::before,.welcome-card:not(.invitation-card) .ayah-divider::after{background:linear-gradient(90deg,transparent,#b69a60a6)}
+.welcome-card:not(.invitation-card) .ayah-hero-text{font-size:clamp(1.15rem,4.8vw,1.3rem);line-height:2.15;color:var(--text-dark);text-shadow:none}
+.welcome-card:not(.invitation-card) .ayah-hero-ref{margin-top:14px;font-size:.78rem;color:#948a7e;letter-spacing:.5px}
+.invitation-card{margin-top:0}
+.hosts-box{background:linear-gradient(180deg,#fffdf5b8,#fffdf54d);border-color:#b69a6066;box-shadow:0 12px 30px #8c536910,inset 0 0 0 5px #ffffff59}
+.hosts-box .host-name{color:#62394a;font-weight:700;text-shadow:0 1px 0 #fff8,0 2px 8px #8c53691c}
+.hosts-box .host-role{color:#786b61;font-weight:500}
+.section-title,.calendar-head .month,.day-name,.modal-content h3{font-family:'Aref Ruqaa',Amiri,serif;color:var(--text-dark)}
+.save-date-btn,.map-link,.comment-btn{border-color:#b69a6066;background:linear-gradient(135deg,#c8b17b,#aa8b54);color:white}
+.countdown-section{padding:30px 18px 24px;border:1px solid #b69a6070;border-radius:28px 28px 70px 70px;background:radial-gradient(ellipse at 50% 0%,#f2dfdfb8,transparent 62%),linear-gradient(155deg,#fffdf8f2,#f7efe3eb);box-shadow:0 18px 38px #8c53691c,inset 0 0 0 5px #fffdf884;isolation:isolate}
+.countdown-section::before{top:13px;right:18%;left:18%;height:1px;background:linear-gradient(90deg,transparent,#b69a60c9,transparent)}
+.countdown-section::after{content:"✦";position:absolute;top:8px;left:50%;transform:translate(-50%,-50%);padding:0 9px;background:#fbf6ef;color:#b69a60;font-size:.72rem}
+.countdown-section .section-title{margin:4px 0 16px;color:#805064;font-family:'Aref Ruqaa',Amiri,serif;font-size:1.55rem;letter-spacing:0}
+.countdown-boxes{gap:9px}
+.countdown-boxes .box{background:linear-gradient(155deg,#fffdf8,#f2e5df);border:1px solid #b8878b66;border-radius:18px 18px 22px 22px;box-shadow:0 8px 18px #8050641b,inset 0 0 0 3px #ffffffaa;padding:17px 5px 16px}
+.countdown-boxes .box:nth-child(even){background:linear-gradient(155deg,#fffdf8,#f3ead9);border-color:#b69a606b}
+.countdown-boxes .box::after{bottom:7px;width:22px;background:linear-gradient(90deg,transparent,#b69a60,transparent)}
+.countdown-boxes .num{color:#784458;font-size:1.95rem;text-shadow:0 1px 0 #fff}
+.countdown-boxes .label{color:#74665d;font-weight:500;letter-spacing:0}
+.location-section{gap:0;padding-inline:8px}
+.location-section>.section-title{margin-bottom:14px}
+.event-schedule{width:100%;max-width:340px;margin:0 0 13px;padding:18px 16px 15px;text-align:center;border:1px solid #b69a6040;border-radius:22px;background:#fffaf2c9;box-shadow:0 7px 24px #654c3908}
+.event-schedule h4{margin:0 0 8px;font-size:.9rem;font-weight:500;color:#66594e}
+.event-schedule time{display:flex;flex-direction:column;gap:4px}
+.event-schedule-date{font-size:1rem;line-height:1.9;color:#51483f}
+.event-schedule-time{font-family:Amiri,serif;font-size:2.15rem;line-height:1.7;color:var(--text-dark)}
+.event-schedule p{margin-top:4px;font-size:.82rem;color:#66594e}
+.location-section .location-name{margin:0 0 2px;font-size:1.2rem;color:#51483f}
+.location-section .location-address{margin:0 0 16px;font-size:1rem;line-height:1.85;color:#62574d}
+.event-action-buttons{display:flex;justify-content:center;gap:10px;width:100%;max-width:340px;margin:0 auto 18px}
+.event-location-btn,.event-action-buttons .save-date-btn{display:flex;flex:1;justify-content:center;align-items:center;gap:8px;min-height:46px;padding:9px 12px;border:1px solid #b69a6055;border-radius:24px;background:#fffaf0;color:#6d5945;font:500 .94rem 'Tajawal',sans-serif;cursor:pointer;transition:background-color .2s,border-color .2s,transform .2s}
+.event-location-btn:hover,.event-action-buttons .save-date-btn:hover{background:#fffdf8;border-color:var(--gold-accent);transform:translateY(-1px)}
+.event-action-buttons .save-date-btn{margin:0;box-shadow:none}
+.location-section .calendar-card{margin-top:0}
+@media(max-width:600px){.event-action-buttons{gap:8px;margin-bottom:15px}.event-location-btn,.event-action-buttons .save-date-btn{min-height:46px;padding:8px 7px;font-size:.88rem}.event-schedule{padding:16px 13px 14px}.location-section .location-name{font-size:1.12rem}.location-section .location-address{font-size:.96rem;margin-bottom:13px}}
+.nav-item:not(.center-action) .icon{background:#f0e9dd;color:var(--text-dark)}
+@keyframes cover-arrive{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cover-photo-drift{from{transform:scale(1)}to{transform:scale(1.055)}}
+@keyframes cover-glint{0%,100%{opacity:.35;transform:scale(.85)}50%{opacity:.85;transform:scale(1.1)}}
+@keyframes invitation-beckon{0%,20%{transform:scale(.98);opacity:.25}35%{opacity:.55}85%,100%{transform:scale(1.28);opacity:0}}
+@media(max-height:730px){.curtain-overlay{padding:22px}.intro-title{font-size:3.5rem}.intro-signature{font-size:1.25rem;margin-bottom:11px}.intro-photo{height:29svh;min-height:185px}.intro-date{top:18px}}
+@media(max-width:350px){.intro-title{font-size:3.3rem}.intro-date{left:-9px;min-width:70px}.intro-glint{right:-18px}}
+@media(prefers-reduced-motion:reduce){.intro-heading,.intro-scene,.intro-invitation-action,.intro-photo img,.intro-glint,.intro-seal::after{animation:none}}
 </style>
 </head>
 <body>
@@ -410,17 +484,26 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 
   <!-- ستارة الدخول -->
   <div id="curtain-container" class="curtain-overlay">
-    <div class="curtain-left"></div>
-    <div class="curtain-right"></div>
-    <div class="entry-button-wrapper" id="start-invitation">
-      <div class="entry-circle">
-        <div class="circle-foliage"></div>
-        <div class="seal-mono" role="img" aria-label="R and A — ر ع">
-          <span class="seal-latin">R &amp; A</span>
-          <span class="seal-rule" aria-hidden="true"><i></i><b>✦</b><i></i></span>
-          <span class="seal-ar">ر · ع</span>
+    <div class="intro-cover">
+      <div class="intro-heading">
+        <p class="intro-eyebrow">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيم</p>
+        <h2 class="intro-title"><span class="name-part">عطا</span><span>و</span><span class="name-part">رغد</span></h2>
+        <p class="intro-signature">دعوةٌ تجمع قلبين على المودّة</p>
+      </div>
+      <div class="intro-scene">
+        <div class="intro-photo">
+          <img src="photo/couple.jfif" alt="" width="736" height="981" fetchpriority="high">
+          <p class="intro-photo-caption">بفرحتنا تكتمل الحكاية</p>
         </div>
-        <span class="entry-open">OPEN</span>
+        <span class="intro-glint intro-glint-one" aria-hidden="true">✦</span>
+        <span class="intro-glint intro-glint-two" aria-hidden="true">✧</span>
+        <div class="intro-date"><span>الجمعة</span><time datetime="2026-11-20">20 <i> / </i> 11</time><span>2026</span></div>
+      </div>
+      <div class="intro-invitation-action">
+        <button class="intro-open-button" id="start-invitation" type="button" aria-label="افتح الدعوة">
+          <span class="intro-seal" aria-hidden="true">ع &amp; ر</span>
+          <span class="intro-seal-caption">افتحوا دعوتنا</span>
+        </button>
       </div>
     </div>
   </div>
@@ -428,13 +511,16 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <div class="app-container max-w-[393px]">
 
     <header class="hero">
+      <div class="monogram" aria-hidden="true">ع &amp; ر</div>
+      <svg class="botanical botanical-right" viewBox="0 0 100 170" aria-hidden="true"><path d="M50 168C48 125 57 80 78 5M53 125C34 112 25 99 20 81M61 92C76 80 84 65 87 49M68 59C51 48 44 34 41 20"/><ellipse cx="18" cy="77" rx="5" ry="17" transform="rotate(-38 18 77)"/><ellipse cx="88" cy="45" rx="5" ry="17" transform="rotate(38 88 45)"/><ellipse cx="39" cy="17" rx="5" ry="16" transform="rotate(-38 39 17)"/></svg>
+      <svg class="botanical botanical-left" viewBox="0 0 100 170" aria-hidden="true"><path d="M50 168C48 125 57 80 78 5M53 125C34 112 25 99 20 81M61 92C76 80 84 65 87 49M68 59C51 48 44 34 41 20"/><ellipse cx="18" cy="77" rx="5" ry="17" transform="rotate(-38 18 77)"/><ellipse cx="88" cy="45" rx="5" ry="17" transform="rotate(38 88 45)"/><ellipse cx="39" cy="17" rx="5" ry="16" transform="rotate(-38 39 17)"/></svg>
       <h1 class="hero-names">
-        <p class="hero-subtitle">Wedding Invitation</p>
+        <span class="hero-subtitle">Wedding Invitation</span>
         <span class="name-wrapper"><span class="title-prefix">Mr.</span><span class="name-text">Atta</span></span>
         <span class="ampersand-wrapper"><span class="ampersand">&amp;</span></span>
         <span class="name-wrapper"><span class="title-prefix">Ms.</span><span class="name-text">Raghad</span></span>
       </h1>
-      <p class="hero-date">الجمعــة، <b>20 نوفمبر 2026</b> في <b>4:00 مساءً</b></p>
+      <p class="hero-date">بكل الحب، ننتظركم لتشاركونا فرحتنا</p>
       <div class="scroll-indicator"><i class="ph ph-caret-double-down icon"></i></div>
     </header>
 
@@ -447,6 +533,9 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
         </p>
         <p class="ayah-hero-ref">سورة الروم · الآية ٢١</p>
       </div>
+    </section>
+
+    <section class="card welcome-card invitation-card">
       <p class="welcome-text">
         بكل الحب والفرح، يسعدنا دعوتكم لمشاركتنا أجمل لحظاتنا، والاحتفال معنا ببداية حكاية جديدة. حضوركم يزيد فرحتنا ويجعل يومنا أجمل.
       </p>
@@ -463,9 +552,18 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     </section>
 
     <section class="location-section">
-      <h3 class="section-title">الموقع</h3>
+      <h3 class="section-title">تفاصيل الحفل</h3>
+      <div class="event-schedule" aria-labelledby="event-schedule-title">
+        <h4 id="event-schedule-title">موعدنا</h4>
+        <time datetime="2026-11-20T16:00:00+02:00"><span class="event-schedule-date">الجمعة · 20 نوفمبر 2026</span><span class="event-schedule-time">الرابعة عصرًا</span></time>
+        <p>بتوقيت غزة</p>
+      </div>
       <p class="location-name">صالة قصر السعادة</p>
       <p class="location-address">مفترق ضبيط<br>تقاطع الجلاء مع شارع الثورة</p>
+      <div class="event-action-buttons">
+        <button class="event-location-btn" id="event-location-button" type="button"><i class="ph ph-map-pin" aria-hidden="true"></i> الموقع</button>
+        <button class="save-date-btn" id="save-date-btn" type="button"><span>احفظ الموعد</span><span aria-hidden="true">📅</span></button>
+      </div>
       <div class="calendar-card">
         <div class="royal-shine" aria-hidden="true"></div>
         <div class="royal-seal" aria-hidden="true"><span class="royal-mono">A &amp; R</span><span class="royal-seal-sub">20 · 11 · 2026</span></div>
@@ -523,7 +621,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
           </div>
         </div>
       </div>
-      <button class="save-date-btn" id="save-date-btn"><span>احفظ الموعد</span><span>📅</span></button>
     </section>
 
     <section class="countdown-section">
@@ -536,24 +633,13 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       </div>
     </section>
 
-    <section class="details-section">
-      <h3 class="section-title">تفاصيل الحفل</h3>
-      <div class="details-list">
-        <div class="detail-item"><span class="bullet"></span><span class="text">يرجى الحضور في الوقت المحدد</span><span class="info-icon">ⓘ</span></div>
-      </div>
-    </section>
-
     <section class="closing-message">
       <p>وجودكم بيننا هو أجمل هدية،<br>وحضوركم يزيد فرحتنا نورًا وسعادة 💫</p>
       <p class="highlight">ننتظركم بكل حب لنصنع معًا ذكرى لا تُنسى 🤍</p>
     </section>
 
-    <section class="moments-section">
-      <h3 class="section-title">اللقاء الأول</h3>
-      <div class="video-placeholder">
-        <img class="moment-img" src="photo/couple.jfif" alt="عطا ورغد">
-      </div>
-<div class="congratulations">
+    <section class="congratulations-section">
+      <div class="congratulations">
         <p class="cong-title">رسالة الاصدقاء 💬</p>
         <div class="comments-list" id="comments-list">
           <p class="comments-empty" id="comments-empty">كن أول من يكتب رسالة 🤍</p>
@@ -572,25 +658,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
           <button class="comment-btn" type="submit" id="comment-send"><i class="ph ph-paper-plane-tilt"></i><span>إرسال</span></button>
         </div>
       </form>
-    </section>
-
-    <section class="timeline-section">
-      <h3 class="section-title">برنامج المناسبة</h3>
-      <div class="timeline">
-        <div class="scroll-tracker-dot" id="scroll-tracker"></div>
-        <div class="timeline-item active">
-          <div class="dot"></div>
-          <div class="content"><span class="event-name">دخول القاعة</span>
-            <div class="time-container"><span class="event-time">PM 4:00</span><span class="event-time">20/11</span></div>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="dot"></div>
-          <div class="content"><span class="event-name">زفة العروسين</span>
-            <div class="time-container"><span class="event-time">PM 6:00</span><span class="event-time">20/11</span></div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <section class="story-section">
@@ -722,6 +789,7 @@ document.addEventListener('DOMContentLoaded', function(){
   document.addEventListener('keydown', e => { if (e.key === 'Escape') [locationModal, giftModal, qrModal].forEach(closeModal); });
 
   $('btn-location').addEventListener('click', () => openModal(locationModal));
+  $('event-location-button').addEventListener('click', () => openModal(locationModal));
   $('close-modal').addEventListener('click', () => closeModal(locationModal));
   $('btn-gift').addEventListener('click', () => openModal(giftModal));
   $('btn-comments').addEventListener('click', () => {
@@ -822,24 +890,45 @@ document.addEventListener('DOMContentLoaded', function(){
   // الستارة + التمرير التلقائي (نفس حركة الموقع المرجعي)
   const curtain = $('curtain-container'), startBtn = $('start-invitation');
   document.body.style.overflow = 'hidden';
-  let scrollSpeed = 1, autoScrollAnimation;
+  let scrollSpeed = .55, autoScrollAnimation, resumeScrollTimer, autoScrollStarted = false, reachedPageEnd = false;
   function scrollStep(){
     window.scrollTo(0, window.scrollY + scrollSpeed);
-    if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) { stopScroll(); }
+    if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) { reachedPageEnd = true; stopScroll(); }
     else { autoScrollAnimation = requestAnimationFrame(scrollStep); }
   }
   function stopScroll(){
     if (autoScrollAnimation) cancelAnimationFrame(autoScrollAnimation);
-    window.removeEventListener('wheel', stopScroll);
-    window.removeEventListener('touchstart', stopScroll);
-    window.removeEventListener('mousedown', stopScroll);
+    autoScrollAnimation = null;
   }
   function startAutoScroll(){
-    window.addEventListener('wheel', stopScroll, {passive:true});
-    window.addEventListener('touchstart', stopScroll, {passive:true});
-    window.addEventListener('mousedown', stopScroll, {passive:true});
+    if (reachedPageEnd || autoScrollAnimation) return;
+    autoScrollStarted = true;
     autoScrollAnimation = requestAnimationFrame(scrollStep);
   }
+  function pauseAutoScroll(){
+    if (!autoScrollStarted) return;
+    stopScroll();
+    clearTimeout(resumeScrollTimer);
+  }
+  function resumeAutoScroll(){
+    if (!autoScrollStarted || reachedPageEnd) return;
+    clearTimeout(resumeScrollTimer);
+    resumeScrollTimer = setTimeout(startAutoScroll, 500);
+  }
+  // أوقف الحركة أثناء تفاعل الزائر، ثم استأنفها بعد نصف ثانية من انتهاء التفاعل.
+  window.addEventListener('touchstart', pauseAutoScroll, {passive:true});
+  window.addEventListener('touchend', resumeAutoScroll, {passive:true});
+  window.addEventListener('touchcancel', resumeAutoScroll, {passive:true});
+  window.addEventListener('pointerdown', pauseAutoScroll, {passive:true});
+  window.addEventListener('pointerup', resumeAutoScroll, {passive:true});
+  window.addEventListener('pointercancel', resumeAutoScroll, {passive:true});
+  window.addEventListener('wheel', () => { pauseAutoScroll(); resumeAutoScroll(); }, {passive:true});
+  window.addEventListener('keydown', e => {
+    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key)) pauseAutoScroll();
+  });
+  window.addEventListener('keyup', e => {
+    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key)) resumeAutoScroll();
+  });
   startBtn.addEventListener('click', function(){
     curtain.classList.add('curtain-opened');
     // تشغيل الموسيقى تلقائياً عند الدخول (بدون زر إيقاف)
@@ -858,13 +947,11 @@ document.addEventListener('DOMContentLoaded', function(){
   // شرح الخطوات بالكامل في آخر رسالتي + في ملف google-apps-script.js
   const COMMENTS_API = 'https://script.google.com/macros/s/AKfycbzgGx_lgXPUB1d28KpRM3LZMuJ04zAZMBp3hI1-jOyIXzwKWg_hGDRspOY9vgI_hP0G/exec';
 
-  function timeAgo(ts){
-    const diff = (Date.now() - ts) / 1000;
-    if (diff < 60) return 'الآن';
-    if (diff < 3600) return 'قبل ' + Math.floor(diff / 60) + ' دقيقة';
-    if (diff < 86400) return 'قبل ' + Math.floor(diff / 3600) + ' ساعة';
-    if (diff < 604800) return 'قبل ' + Math.floor(diff / 86400) + ' يوم';
-    return new Date(ts).toLocaleDateString('ar-EG', {day:'numeric', month:'long'});
+  function formatCommentTime(ts){
+    if (ts == null || ts === '' || !Number.isFinite(Number(ts))) return 'تاريخ الإرسال غير متوفر';
+    return new Intl.DateTimeFormat('ar-PS', {
+      dateStyle:'medium', timeStyle:'short', timeZone:'Asia/Hebron'
+    }).format(new Date(Number(ts)));
   }
 
   function renderComment(c, pending){
@@ -879,7 +966,7 @@ document.addEventListener('DOMContentLoaded', function(){
       '</div>';
     el.querySelector('.comment-avatar').textContent = initial;
     el.querySelector('.comment-name').textContent = c.name || 'زائر';
-    el.querySelector('.comment-time').textContent = pending ? 'جاري الإرسال...' : timeAgo(c.time || Date.now());
+    el.querySelector('.comment-time').textContent = pending ? 'جاري الإرسال...' : formatCommentTime(c.time);
     el.querySelector('.comment-text').textContent = c.message || '';
     return el;
   }
@@ -887,6 +974,15 @@ document.addEventListener('DOMContentLoaded', function(){
   const list = $('comments-list'), empty = $('comments-empty'), form = $('comment-form'),
         nameIn = $('comment-name'), textIn = $('comment-text'),
         counter = $('comment-counter'), sendBtn = $('comment-send');
+
+  function stopAutoScrollPermanently(){
+    autoScrollStarted = false;
+    reachedPageEnd = true;
+    clearTimeout(resumeScrollTimer);
+    stopScroll();
+  }
+  form.addEventListener('pointerdown', stopAutoScrollPermanently, {once:true});
+  form.addEventListener('focusin', stopAutoScrollPermanently, {once:true});
 
   textIn.addEventListener('input', () => counter.textContent = textIn.value.length + ' / 300');
 
@@ -910,7 +1006,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const btnLabel = sendBtn.querySelector('span');
     sendBtn.disabled = true; btnLabel.textContent = 'جاري الإرسال...';
     // عرض فوري ثم تأكيد الحفظ
-    const temp = renderComment({ name, message, time: Date.now() }, true);
+    const sentAt = Date.now();
+    const temp = renderComment({ name, message, time: sentAt }, true);
     if (empty) empty.remove();
     list.prepend(temp);
     textIn.value = ''; counter.textContent = '0 / 300';
@@ -918,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', function(){
       await fetch(COMMENTS_API, { method:'POST', mode:'no-cors',
         body: new URLSearchParams({ action:'add', name, message }) });
       temp.classList.remove('comment-pending');
-      temp.querySelector('.comment-time').textContent = timeAgo(Date.now());
+      temp.querySelector('.comment-time').textContent = formatCommentTime(sentAt);
       toast('وصلتنا رسالتك 🤍');
     } catch(e){
       temp.remove();
@@ -934,28 +1031,6 @@ document.addEventListener('DOMContentLoaded', function(){
   const storyToggle = $('story-toggle'), storySection = document.querySelector('.story-section');
   if (storyToggle && storySection) storyToggle.addEventListener('click', () => storySection.classList.toggle('open'));
 
-  // النقطة الذهبية المتحركة مع التمرير
-  const timeline = document.querySelector('.timeline'), trackerDot = $('scroll-tracker');
-  const items = document.querySelectorAll('.timeline-item');
-  if (timeline && trackerDot && items.length) {
-    trackerDot.style.display = 'block';
-    window.addEventListener('scroll', function(){
-      const viewportMiddle = window.innerHeight / 2;
-      let closest = null, minDist = Infinity;
-      items.forEach(item => {
-        const r = item.getBoundingClientRect();
-        const c = r.top + r.height / 2;
-        const d = Math.abs(viewportMiddle - c);
-        if (d < minDist) { minDist = d; closest = item; }
-      });
-      if (closest) {
-        const dot = closest.querySelector('.dot');
-        trackerDot.style.top = (closest.offsetTop + dot.offsetTop) + 'px';
-        items.forEach(i => i.classList.remove('active'));
-        closest.classList.add('active');
-      }
-    }, {passive:true});
-  }
 });
 </script>
 </body>

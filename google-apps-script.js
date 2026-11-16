@@ -56,8 +56,9 @@ function doPost(e) {
     sheet.appendRow([
       name,
       message,
-      new Date().toLocaleString('ar-EG')
+      new Date()
     ]);
+    sheet.getRange(sheet.getLastRow(), 3).setNumberFormat('yyyy-MM-dd HH:mm:ss');
 
     return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
   } catch (err) {
@@ -91,10 +92,11 @@ function readRows() {
 
 /** تحويل خلية التاريخ إلى رقم milliseconds لاستخدام timeAgo */
 function parseDate(value) {
-  if (!value) return Date.now();
+  if (!value) return null;
   if (value instanceof Date) return value.getTime();
+  if (typeof value === 'number' && isFinite(value)) return value;
   var t = Date.parse(String(value).replace(/\//g, '-'));
-  return isNaN(t) ? Date.now() : t;
+  return isNaN(t) ? null : t;
 }
 
 /** فتح ملف Excel المرتبط، وإنشاء صف العناوين تلقائيًا */
