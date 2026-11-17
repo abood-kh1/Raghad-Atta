@@ -465,6 +465,10 @@ body{background-color:#f8f4ec}
 .location-section .calendar-card{margin-top:0}
 @media(max-width:600px){.event-action-buttons{gap:8px;margin-bottom:15px}.event-location-btn,.event-action-buttons .save-date-btn{min-height:46px;padding:8px 7px;font-size:.88rem}.event-schedule{padding:16px 13px 14px}.location-section .location-name{font-size:1.12rem}.location-section .location-address{font-size:.96rem;margin-bottom:13px}}
 .nav-item:not(.center-action) .icon{background:#f0e9dd;color:var(--text-dark)}
+.utility-controls{position:fixed;top:max(14px,env(safe-area-inset-top));left:14px;z-index:1100;display:flex;gap:7px;opacity:0;visibility:hidden;transition:opacity .4s}
+.invitation-ready .utility-controls{opacity:1;visibility:visible}
+.utility-button{width:42px;height:42px;border:1px solid #b69a6055;border-radius:50%;background:#fffcf1e8;color:var(--text-dark);box-shadow:0 4px 16px #634b3e12;cursor:pointer;display:grid;place-items:center;font-size:1.1rem}
+.reading-progress{position:fixed;top:0;right:0;height:2px;width:0;background:var(--gold-accent);z-index:1200;pointer-events:none}
 @keyframes cover-arrive{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:translateY(0)}}
 @keyframes cover-photo-drift{from{transform:scale(1)}to{transform:scale(1.055)}}
 @keyframes cover-glint{0%,100%{opacity:.35;transform:scale(.85)}50%{opacity:.85;transform:scale(1.1)}}
@@ -691,6 +695,10 @@ body{background-color:#f8f4ec}
 
   </div>
 
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <div class="utility-controls" role="group" aria-label="التحكم بالدعوة">
+    <button type="button" class="utility-button" id="toggle-autoscroll" aria-label="استئناف التمرير التلقائي" aria-pressed="false"><i class="ph ph-play" aria-hidden="true"></i></button>
+  </div>
   <nav class="bottom-nav">
     <button class="nav-item" id="btn-qr"><span class="icon"><i class="ph ph-qr-code"></i></span><span class="label">رمز الدعوة</span></button>
     <button class="nav-item" id="btn-location"><span class="icon"><i class="ph ph-map-pin"></i></span><span class="label">الموقع</span></button>
@@ -792,6 +800,8 @@ document.addEventListener('DOMContentLoaded', function(){
   $('close-modal').addEventListener('click', () => closeModal(locationModal));
   $('btn-gift').addEventListener('click', () => openModal(giftModal));
   $('btn-comments').addEventListener('click', () => {
+    // أوقف الحركة التلقائية قبل التمرير الناعم حتى لا تنافسه كل إطار.
+    stopAutoScrollPermanently();
     const target = $('comments');
     if (target) target.scrollIntoView({ behavior:'smooth', block:'center' });
   });
@@ -889,49 +899,94 @@ document.addEventListener('DOMContentLoaded', function(){
   // الستارة + التمرير التلقائي (نفس حركة الموقع المرجعي)
   const curtain = $('curtain-container'), startBtn = $('start-invitation');
   document.body.style.overflow = 'hidden';
-  const scrollSpeed = 33;
-  let autoScrollAnimation, resumeScrollTimer, autoScrollStarted = false, reachedPageEnd = false, lastScrollFrame = 0;
-  function scrollStep(timestamp){
-    const elapsed = lastScrollFrame ? Math.min(timestamp - lastScrollFrame, 50) : 1000 / 60;
-    lastScrollFrame = timestamp;
-    window.scrollTo(0, window.scrollY + scrollSpeed * elapsed / 1000);
-    if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) { reachedPageEnd = true; stopScroll(); }
-    else { autoScrollAnimation = requestAnimationFrame(scrollStep); }
+  let autoScrollAnimation, lastScrollTime = 0, scrollPosition = 0, scrolling = false;
+  let touchResumeTimer, interactionWasScrolling = false, manualScrollPause = false;
+  const scrollButton = $('toggle-autoscroll');
+  function updateScrollButton(){
+    scrollButton.setAttribute('aria-pressed', String(scrolling));
+    const label = scrolling ? 'إيقاف التمرير التلقائي' : 'استئناف التمرير التلقائي';
+    scrollButton.setAttribute('aria-label', label);
+    scrollButton.title = label;
+    scrollButton.innerHTML = '<i aria-hidden="true" class="ph ' + (scrolling ? 'ph-pause' : 'ph-play') + '"></i>';
+  }
+  function scrollStep(time){
+    if (!scrolling) return;
+    if (!lastScrollTime) lastScrollTime = time;
+    if (Math.abs(window.scrollY - scrollPosition) > 3) scrollPosition = window.scrollY;
+    scrollPosition += Math.min(time - lastScrollTime, 50) * .045;
+    lastScrollTime = time;
+    window.scrollTo(0, scrollPosition);
+    if (Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 5) stopScroll();
+    else autoScrollAnimation = requestAnimationFrame(scrollStep);
   }
   function stopScroll(){
+    scrolling = false;
     if (autoScrollAnimation) cancelAnimationFrame(autoScrollAnimation);
     autoScrollAnimation = null;
-    lastScrollFrame = 0;
+    updateScrollButton();
   }
+  function pauseForManualScroll(){
+    if (scrolling) interactionWasScrolling = true;
+    if (touchResumeTimer) clearTimeout(touchResumeTimer);
+    touchResumeTimer = null;
+    if (scrolling) stopScroll();
+  }
+  function resumeAfterManualScroll(){
+    if (!interactionWasScrolling || manualScrollPause) return;
+    if (touchResumeTimer) clearTimeout(touchResumeTimer);
+    touchResumeTimer = setTimeout(() => {
+      interactionWasScrolling = false;
+      if (!document.hidden && !manualScrollPause) startAutoScroll();
+    }, 500);
+  }
+  function onScrollKey(e){
+    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key)) {
+      pauseForManualScroll();
+      resumeAfterManualScroll();
+    }
+  }
+  function onTouchStart(e){
+    if (e.target.closest('#toggle-autoscroll')) return;
+    pauseForManualScroll();
+  }
+  function onWheel(){ pauseForManualScroll(); resumeAfterManualScroll(); }
   function startAutoScroll(){
-    if (reachedPageEnd || autoScrollAnimation) return;
-    autoScrollStarted = true;
+    if (scrolling || manualScrollPause) return;
+    scrolling = true;
+    lastScrollTime = 0;
+    scrollPosition = window.scrollY;
+    window.addEventListener('wheel', onWheel, {passive:true});
+    window.addEventListener('touchstart', onTouchStart, {passive:true});
+    window.addEventListener('touchend', resumeAfterManualScroll, {passive:true});
+    window.addEventListener('touchcancel', resumeAfterManualScroll, {passive:true});
+    window.addEventListener('keydown', onScrollKey);
+    updateScrollButton();
     autoScrollAnimation = requestAnimationFrame(scrollStep);
   }
-  function pauseAutoScroll(){
-    if (!autoScrollStarted) return;
-    stopScroll();
-    clearTimeout(resumeScrollTimer);
-  }
-  function resumeAutoScroll(){
-    if (!autoScrollStarted || reachedPageEnd) return;
-    clearTimeout(resumeScrollTimer);
-    resumeScrollTimer = setTimeout(startAutoScroll, 500);
-  }
-  // أوقف الحركة أثناء تفاعل الزائر، ثم استأنفها بعد نصف ثانية من انتهاء التفاعل.
-  window.addEventListener('touchstart', pauseAutoScroll, {passive:true});
-  window.addEventListener('touchend', resumeAutoScroll, {passive:true});
-  window.addEventListener('touchcancel', resumeAutoScroll, {passive:true});
-  window.addEventListener('pointerdown', pauseAutoScroll, {passive:true});
-  window.addEventListener('pointerup', resumeAutoScroll, {passive:true});
-  window.addEventListener('pointercancel', resumeAutoScroll, {passive:true});
-  window.addEventListener('wheel', () => { pauseAutoScroll(); resumeAutoScroll(); }, {passive:true});
-  window.addEventListener('keydown', e => {
-    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key)) pauseAutoScroll();
+  scrollButton.addEventListener('click', () => {
+    if (scrolling || interactionWasScrolling) {
+      manualScrollPause = true;
+      interactionWasScrolling = false;
+      if (touchResumeTimer) clearTimeout(touchResumeTimer);
+      stopScroll();
+    } else {
+      manualScrollPause = false;
+      startAutoScroll();
+    }
   });
-  window.addEventListener('keyup', e => {
-    if (['ArrowDown','ArrowUp','PageDown','PageUp','Home','End',' '].includes(e.key)) resumeAutoScroll();
-  });
+  document.addEventListener('visibilitychange', () => { if (document.hidden) stopScroll(); });
+  updateScrollButton();
+  let progressScheduled = false;
+  function updateReadingProgress(){
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    $('reading-progress').style.width = (height > 0 ? Math.min(100, window.scrollY / height * 100) : 0) + '%';
+    progressScheduled = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!progressScheduled) { progressScheduled = true; requestAnimationFrame(updateReadingProgress); }
+  }, {passive:true});
+  window.addEventListener('resize', updateReadingProgress);
+  updateReadingProgress();
   startBtn.addEventListener('click', function(){
     curtain.classList.add('curtain-opened');
     // تشغيل الموسيقى تلقائياً عند الدخول (بدون زر إيقاف)
@@ -940,6 +995,7 @@ document.addEventListener('DOMContentLoaded', function(){
     setTimeout(() => {
       document.body.style.overflow = '';
       curtain.style.display = 'none';
+      document.body.classList.add('invitation-ready');
       void document.body.offsetHeight;
       requestAnimationFrame(() => requestAnimationFrame(startAutoScroll));
     }, 1200);
@@ -979,9 +1035,9 @@ document.addEventListener('DOMContentLoaded', function(){
         counter = $('comment-counter'), sendBtn = $('comment-send');
 
   function stopAutoScrollPermanently(){
-    autoScrollStarted = false;
-    reachedPageEnd = true;
-    clearTimeout(resumeScrollTimer);
+    manualScrollPause = true;
+    interactionWasScrolling = false;
+    if (touchResumeTimer) clearTimeout(touchResumeTimer);
     stopScroll();
   }
   form.addEventListener('pointerdown', stopAutoScrollPermanently, {once:true});
